@@ -1,13 +1,16 @@
-# postman-test
+# Disclaimer
+Based on https://github.com/prof3ssorSt3v3/postman-test
 
-Repo for video demo of how to use postman api test scripts. The API itself has been stripped down to its most basic functionality for the tests. All the scripts are at the root level of the project. The data is just being stored in memory with a single base set of user and movie objects from the `data.js` file.
+# peppers-demo-api
+
+Repo for demo of how to use postman api test scripts. The API itself has been stripped down to its most basic functionality for the tests. All the scripts are at the root level of the project. The data is just being stored in memory with a single base set of user and movie objects from the `data.js` file.
 
 ## Set up
 
 Once you have downloaded or cloned the repo you need to install the dependencies for the API. We do this using `npm`.
 
 ```cli
-npm install
+npm ci
 ```
 
 This command will read the package.json file and install all the required dependencies, such as, `express`, `bcrypt`, and `jsonwebtoken`.
@@ -28,13 +31,13 @@ npm run dev
 
 This base route can be used to check if the API is currently running. If the server is running there should always be a response.
 
-However, it will check for a valid API key too. The value of the key is `MyUniqueApiKey`. It needs to be sent from the client as a value for an `x-api-key` header.
+However, it will check for a valid API key too. The value of the key is `Salsita`. It needs to be sent from the client as a value for an `x-api-key` header.
 
 The successful response will be:
 
 ```json
 {
-  "STATUS": "Good to go!"
+  "STATUS": "This is hot stuff!"
 }
 ```
 
@@ -59,8 +62,8 @@ Body of **request** must be JSON. Sample:
 
 ```json
 {
-  "email": "bubba@goesfast.ca",
-  "password": "nascar123"
+  "email": "pavelp@salsitasoft.com",
+  "password": "spicy123"
 }
 ```
 
@@ -72,8 +75,8 @@ Body of **request** must be JSON. Sample:
 
 ```json
 {
-  "email": "bubba@goesfast.ca",
-  "password": "nascar123"
+  "email": "pavelp@salsitasoft.com",
+  "password": "spicy123"
 }
 ```
 
@@ -87,11 +90,11 @@ Valid request will return a JSON string **response** like this sample:
 }
 ```
 
-### Get list of all movies
+### Get list of all peppers
 
-No body required. Authorization Bearer token required in the headers. Will return list of all movies for the current user based on the id in the signed token.
+No body required. Authorization Bearer token required in the headers. Will return list of all peppers for the current user based on the id in the signed token.
 
-**GET** `http://localhost:3000/api/movies`
+**GET** `http://localhost:3000/api/peppers`
 
 Sample **Response**:
 
@@ -100,51 +103,51 @@ Sample **Response**:
   "data": [
     {
       "_id": 1587912695511,
-      "title": "Alien",
-      "year": 1979,
+      "name": "Jolokia",
+      "strength": 2,
       "owner": 1587912698986
     },
     {
-      "_id": 1587921091646,
-      "title": "Avatar",
-      "year": 2009,
+      "_id": 1587912695511,
+      "name": "Habanero",
+      "strength": 3,
       "owner": 1587912698986
     }
   ]
 }
 ```
 
-### Get a specific movie
+### Get a specific pepper
 
-No body required. Authorization Bearer token required in the headers. Will get details of specific movie for current user, based on the token.
+No body required. Authorization Bearer token required in the headers. Will get details of specific pepper for current user, based on the token.
 
-**GET** `http://localhost:3000/api/movies/:id`
+**GET** `http://localhost:3000/api/pepper/:id`
 
 Sample **response**:
 
 ```json
 {
   "data": {
-    "_id": 1587912695511,
-    "title": "Alien",
-    "year": 1979,
-    "owner": 1587912698986
+      "_id": 1587912695511,
+      "name": "Jolokia",
+      "strength": 2,
+      "owner": 1587912698986
   }
 }
 ```
 
-### Add a new movie
+### Add a new pepper
 
-Body must be JSON. Authorization Bearer token required in the headers. Adds a new movie for the current user. User id comes from the token. Sample:
+Body must be JSON. Authorization Bearer token required in the headers. Adds a new pepper for the current user. User id comes from the token. Sample:
 
 ```json
 {
-  "title": "Some movie name",
-  "year": 1999
+  "name": "Some hot pepper name",
+  "strength": 4
 }
 ```
 
-**POST** `http://localhost:3000/api/movies`
+**POST** `http://localhost:3000/api/peppers`
 
 **Response** will have the same data, plus an \_id property.
 
@@ -152,19 +155,19 @@ Body must be JSON. Authorization Bearer token required in the headers. Adds a ne
 {
   "data": {
     "_id": 1587921293849,
-    "title": "Avatar",
-    "year": 2009
+    "name": "Some hot pepper name",
+    "strength": 4
   }
 }
 ```
 
-### Delete a movie
+### Delete a pepper
 
 No body required. Authorization Bearer token required in the headers. Movie id will come from the URL. The owner of the movie must match the user id in the token.
 
-**DELETE** `http://localhost:3000/api/movies/:id`
+**DELETE** `http://localhost:3000/api/peppers/:id`
 
-**Response** for the delete will just be the id for the deleted movie
+**Response** for the delete will just be the id for the deleted pepper
 
 ```json
 {
