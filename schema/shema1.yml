@@ -1,0 +1,67 @@
+openapi: 3.0.1
+info:
+  title: Peppers
+  description: Peppers API
+  version: "0.0.1"
+servers:
+  - url: "http://localhost:3000"
+paths:
+  
+  /api/peppers/:id:
+    get:
+      description: Get pepper by ID
+      responses:
+        "200":
+          description: Response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+
+    delete:
+      description: Delete pepper by ID
+      responses:
+        "200":
+          description: Successful delete
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+
+  /api/peppers:
+    get:
+      description: Get all peppers
+      responses:
+        "200":
+          description: Response on success
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+
+    post:
+      description: Add new pepper
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                strength:
+                  type: integer
+                name:
+                  type: string
+            examples:
+              "0":
+                value: { "name": "habanero", "strength": 3 }
+      responses:
+        "201":
+          description: Successfuly added pepper
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}

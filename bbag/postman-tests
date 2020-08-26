@@ -1,0 +1,24 @@
+pm.test("Body matches string", function () {
+    pm.expect(pm.response.text()).to.include("Jolokia");
+});
+
+pm.test("Response contains properties", function () {
+    pm.expect(pm.response.json()[0]).to.have.property('strength');
+})
+
+pm.test("Correct response", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData._id).to.be.a("number");
+    pm.expect(jsonData.name).to.eql("Shishito");
+    pm.expect(jsonData.strength).to.eql(1);
+});
+
+pm.test("Coorect info about the error", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData.error.code).to.eql(158);
+    pm.expect(jsonData.error.message).to.eql("User not authorized");
+});
+
+
+const pepper_id = pm.response.json()[0]._id;
+pm.collectionVariables.set("pepper_id", pepper_id);

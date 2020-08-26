@@ -75,9 +75,9 @@ router.post('/peppers', (req, res) => {
 router.delete('/peppers/:id', authenticate, (req, res) => {
   // DELETE /api/peppers - delete a specific pepper
   // user id from the token
-  let pepperID = req.params.id;
+  let pepperID = parseInt(req.params.id);
   let userID = parseInt(req.user._id)
-  console.log(userID);
+  console.log(pepperID);
   let idx = peppers.findIndex(
     (pepper) => pepper._id === pepperID
   );

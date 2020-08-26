@@ -84,9 +84,15 @@ const hashPass = async (req, res, next) => {
   //encrypt a password and add it to the req.body as encryptedPassword
   //WARNING, NOT CHECKING FOR EXISTENCE OF PASSWORD FIELD
   let newUser = req.body;
-  req.body.hashedPassword = await bcrypt.hash(newUser.password, saltRounds);
-  console.log('password has been hashed');
+  if (newUser && newUser.password) {
+    req.body.hashedPassword = await bcrypt.hash(newUser.password, saltRounds);
+    console.log('password has been hashed');
   next();
+  } else {
+    res
+      .status(400)
+      .send({ error: { code: 333, message: 'Password not provided' } });
+  }
 };
 
 const uniqueEmail = (req, res, next) => {

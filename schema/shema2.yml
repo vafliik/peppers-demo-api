@@ -1,0 +1,146 @@
+openapi: 3.0.1
+info:
+  title: Peppers
+  description: Peppers API
+  version: "0.0.2"
+servers:
+  - url: "http://localhost:3000"
+paths:
+  /api/users/login:
+    post:
+      description: User Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                email:
+                  type: string
+            examples:
+              "0":
+                value:
+                  { "email": "pavelp1@salsitasoft.com", "password": "xxx123" }
+      responses:
+        "200":
+          description: Sample login
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+
+  /api/users/register:
+    post:
+      description: Register user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                email:
+                  type: string
+            examples:
+              "0":
+                value: |-
+                  {
+                      "email": "pavelp1@salsitasoft.com",
+                      "password": "spicy123"
+                  }
+      responses:
+        "201":
+          description: Sample response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+
+  /api/peppers/:id:
+    get:
+      description: Get pepper by ID
+      responses:
+        "200":
+          description: Response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+
+    delete:
+      description: Delete pepper by ID
+      responses:
+        "200":
+          description: Successful delete
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+
+  /api/peppers:
+    get:
+      description: Get all peppers
+      responses:
+        "200":
+          description: Response on success
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+
+    post:
+      description: Add new pepper
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                strength:
+                  type: integer
+                name:
+                  type: string
+            examples:
+              "0":
+                value: { "name": "habanero", "strength": 3 }
+      responses:
+        "201":
+          description: Successfuly added pepper
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+
+  /:
+    get:
+      description: Healthcheck
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: xxx
+      responses:
+        "200":
+          description: Correct key
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+        "401":
+          description: Wrong or missing key
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
