@@ -10,19 +10,36 @@ const authenticate = (req, res, next) => {
   if (authHeader) {
     const [type, token] = authHeader.split(' ');
     if (type === 'Bearer' && typeof token !== 'undefined') {
-      const payload = jwt.verify(token, tokenKey);
-      //put the data from the token payload into req.user prop
-      req.user = payload;
-      //now we have the user._id in our req object
+      try {
+        const payload = jwt.verify(token, tokenKey);
+        //put the data from the token payload into req.user prop
+        req.user = payload;
+        //now we have the user._id in our req object
+      } catch (JsonWebTokenError) {
+        res.status(400).send({
+          error: {
+            code: 666,
+            message: 'Ivalid token',
+          },
+        });
+      }
     } else {
       //no matching user
       res.status(400).send({
         error: {
           code: 789,
-          message: 'No valid token',
+          message: 'No valid user',
         },
       });
     }
+  } else {
+    //no authentication header
+    res.status(400).send({
+      error: {
+        code: 158,
+        message: 'User not authorized',
+      },
+    });
   }
   next();
 };

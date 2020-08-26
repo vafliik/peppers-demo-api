@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const users = require('./data').users;
-const movies = require('./data').movies;
+const peppers = require('./data').peppers;
 const {
   authenticate,
   hashPass,
@@ -12,7 +12,7 @@ const {
   validPass,
 } = require('./utils');
 
-//WARNING NOT SANITIZING USER or MOVIE DATA
+//WARNING NOT SANITIZING USER or pepper DATA
 
 //USER routes for registering and logging in
 router.post('/users/register', uniqueEmail, hashPass, (req, res) => {
@@ -24,72 +24,68 @@ router.post('/users/register', uniqueEmail, hashPass, (req, res) => {
     password: req.body.hashedPassword,
   };
   users.push(newUser);
-  res.status(201).send({ data: { _id: newUser._id, email: newUser.email } });
+  console.log(users);
+  res.status(201).send({ _id: newUser._id, email: newUser.email });
 });
 
-router.post('/users/tokens', findUser, validPass, (req, res) => {
+router.post('/users/login', findUser, validPass, (req, res) => {
   //user is logging in to get a token
   //middleware findUser adds `user` to req object
   //validPass will confirm password it is valid
   //we have a matching user, create the token
   let token = createToken(req.user._id);
-  res.status(200).send({ data: { token } });
+  res.status(200).send({ token });
 });
 
-//MOVIE routes - all need a valid token: use authenticate
-router.get('/movies', authenticate, (req, res) => {
-  // GET /api/movies - send ALL the movies that belong to current user
-  let userMovies = movies.filter(
-    (movie) => movie.owner === parseInt(req.user._id)
-  );
-  res.status(200).send({ data: userMovies });
+//PEPPER routes - all need a valid token: use authenticate
+router.get('/peppers', (req, res) => {
+  // GET /api/peppers - send ALL the peppers that belong to current user
+  res.status(200).send(peppers);
 });
 
-router.get('/movies/:id', authenticate, (req, res) => {
-  // GET /api/movies/id - send the details about ONE movie
+router.get('/peppers/:id', (req, res) => {
+  // GET /api/peppers/id - send the details about ONE pepper
   // if the owner matches req.user.id
-  let movieID = req.params.id;
-  let movieMatch = movies.find(
-    (movie) => movie._id === movieID && movie.owner === parseInt(req.user._id)
+  let pepperID = req.params.id;
+  let pepperMatch = peppers.find(
+    (pepper) => pepper._id === pepperID
   );
-  console.log(movieID, req.user._id);
-  if (movieMatch) {
-    res.status(200).send({ data: movieMatch });
+  console.log(pepperID);
+  if (pepperMatch) {
+    res.status(200).send(pepperMatch);
   } else {
     res.status(400).send({
-      error: { code: 147, message: 'No match for specified movie id.' },
+      error: { code: 147, message: 'No match for specified pepper id.' },
     });
   }
 });
 
-router.post('/movies', authenticate, (req, res) => {
-  // POST /api/movies - add a movie for current user
-  let newMovie = {
-    _id: [...Array(30)]
-      .map((e) => ((Math.random() * 36) | 0).toString(36))
-      .join(''),
-    title: req.body.title,
-    year: req.body.year,
-    owner: parseInt(req.user._id),
+router.post('/peppers', (req, res) => {
+  // POST /api/peppers - add a pepper
+  let newpepper = {
+    _id: peppers.slice(-1)[0]._id + 1,
+    name: req.body.name,
+    strength: req.body.strength,
   };
-  movies.push(newMovie);
-  res.status(201).send({
-    data: { _id: newMovie._id, title: newMovie.title, year: newMovie.year },
-  });
+  peppers.push(newpepper);
+  console.log(peppers);
+  res.status(201).send( { _id: newpepper._id, name: newpepper.name, strength: newpepper.strength });
 });
 
-router.delete('/movies/:id', authenticate, (req, res) => {
-  // DELETE /api/movies - delete a specific movie
+router.delete('/peppers/:id', authenticate, (req, res) => {
+  // DELETE /api/peppers - delete a specific pepper
   // user id from the token
-  let movieID = req.params.id;
-  let idx = movies.findIndex(
-    (movie) => movie._id === movieID && movie.owner === parseInt(req.user._id)
+  let pepperID = req.params.id;
+  let userID = parseInt(req.user._id)
+  console.log(userID);
+  let idx = peppers.findIndex(
+    (pepper) => pepper._id === pepperID
   );
   if (idx > -1) {
-    movies.splice(idx, 1);
-    res.status(200).send({ data: { _id: movieID, message: 'Delete Success' } });
+    peppers.splice(idx, 1);
+    res.status(200).send({ _id: pepperID, message: 'Delete Success' });
   } else {
-    res.status(400).send({ error: { code: 258, message: 'Invalid movie id' } });
+    res.status(400).send({ error: { code: 258, message: 'Invalid pepper id' } });
   }
 });
 
