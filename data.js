@@ -16,19 +16,19 @@ const peppers = [
     _id: 1,
     name: 'Jolokia',
     strength: 2,
-    owner: 1587912698986,
+    img: 'https://pepperdatabase.org/images/variety/87/87.jpg',
   },
   {
     _id: 2,
     name: 'Habanero',
     strength: 3,
-    owner: 1587912698986,
+    img: 'https://pepperdatabase.org/images/variety/19/19.jpg',
   },
   {
     _id: 3,
     name: 'Shishito',
     strength: 1,
-    owner: 1598362276594,
+    img: 'https://pepperdatabase.org/images/variety/385/385.jpg',
   }
   
 ];

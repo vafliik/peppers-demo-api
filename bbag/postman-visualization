@@ -11,12 +11,14 @@ var template = `
         <tr>
             <th>Name</th>
             <th>Strength</th>
+            <th>Image</th>
         </tr>
         
         {{#each response}}
             <tr id=row_{{@key}} onClick="handleClick(this.id)">
                 <td id={{@key}}>{{name}}</td>
                 <td>{{strength}}</td>
+                <td><img src='{{img}}' width="50" height="50"></td>
             </tr>
         {{/each}}
     </table>
